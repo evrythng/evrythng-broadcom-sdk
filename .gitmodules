@@ -1,0 +1,4 @@
+[submodule "WICED-SDK-3.3.1/libraries/evrythng/evrythng-c-library"]
+	path = WICED-SDK-3.3.1/libraries/evrythng/evrythng-c-library
+	url = git@github.com:evrythng/evrythng-c-library.git
+    branch = embedded-mqtt

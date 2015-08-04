@@ -1,0 +1,6 @@
+#!/bin/bash
+rmmod ftdi_sio
+rmmod usbserial
+modprobe ftdi_sio
+modprobe usbserial
+echo "0a5c 43fa" >> /sys/bus/usb-serial/drivers/ftdi_sio/new_id
