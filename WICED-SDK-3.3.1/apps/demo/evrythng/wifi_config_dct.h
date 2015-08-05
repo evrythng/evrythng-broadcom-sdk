@@ -43,6 +43,8 @@ extern "C" {
 #if 1
 #define CLIENT_AP_SSID       "RulezPhone"
 #define CLIENT_AP_PASSPHRASE "365432109"
+//#define CLIENT_AP_SSID       "CiklumGuest"
+//#define CLIENT_AP_PASSPHRASE "Welcome2Ciklum"
 #else
 #define CLIENT_AP_SSID       "CiklumGuest"
 #define CLIENT_AP_PASSPHRASE "Welcome2Ciklum"

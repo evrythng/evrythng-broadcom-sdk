@@ -18,7 +18,8 @@
  *                      Macros
  ******************************************************/
 
-#define MQTT_URL "tcp://mqtt.evrythng.com:1883"
+//#define MQTT_URL "tcp://mqtt.evrythng.com:1883"
+#define MQTT_URL "ssl://mqtt.evrythng.com:443"
 
 #define DEVICE_API_KEY "iaaRIcy8WGvDSzgA4xX6IUac4jsjnvAtmMunXw0cigtlbxCvgIsJii6LrhEfPJifxeyRvvjyiqdmWXNg"
 
