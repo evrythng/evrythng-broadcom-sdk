@@ -151,7 +151,7 @@ void evrythng_pub(uint32_t arg)
         {
             button1_pressed == WICED_TRUE ? sprintf(msg, "[{\"value\": true}]") : sprintf(msg, "[{\"value\": false}]");
             previous_button1_state = button1_pressed;
-            evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg, 0);
+            evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
         }
 
         /* Read the state of Button 2 */
@@ -161,7 +161,7 @@ void evrythng_pub(uint32_t arg)
         {
             button2_pressed == WICED_TRUE ? sprintf(msg, "[{\"value\": true}]") : sprintf(msg, "[{\"value\": false}]");
             previous_button2_state = button2_pressed;
-            evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg, 0);
+            evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
         }
 
 #ifndef PUBSUB_THREADS
@@ -212,10 +212,10 @@ void evrythng_cloud_connect(evrythng_handle_t h)
     /* send initial "false" values to the cloud */
     char msg[128];
     sprintf(msg, "[{\"value\": false}]");
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, msg, 0);
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, msg, 0);
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg, 0);
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg, 0);
+    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, msg);
+    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, msg);
+    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
+    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
 }
 
 static int led_to_swtich = -1;
