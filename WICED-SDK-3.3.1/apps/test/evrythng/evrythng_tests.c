@@ -8,6 +8,35 @@
  * written permission of Broadcom Corporation.
  */
 
+/** @file
+ *
+ * Evrythng library unit tests  application
+ *
+ * This application connects to Evrythng's IoT cloud and launches unit tests.
+ *
+ * The application demonstrates the following features
+ *  - Wi-Fi client mode
+ *  - GPIO interface to capture button inputs
+ *  - LED control via GPIO
+ *  - Evrythng API
+ *
+ * Device Configuration
+ *    The application is configured to use the Wi-Fi configuration
+ *    from the local wifi_config_dct.h file. 
+ *
+ * Evrythng Setup (must be completed before compiling)
+ *    1. Go to WICED-SDK-.../libraries/evrythng/evrythng-c-library,
+ *       copy Config_example to Config and open for editing
+ *    2. Go to dashboard.evrythng.com and create an account
+ *    3. Create a product with 2 properties and 2 actions
+ *    4. Create a thing with 2 properties and 2 actions (use the same names as for product)
+ *    5. Create device api key (see docs in the dashboard)
+ *    6. Fill in the Config file with appropriate values
+ *    7. Compile and run the evrythng test application, watch the output for
+ *       a number of passed/failed tetsts.
+ */
+
+
 #include "wiced.h"
 #include "evrythng.h"
 #include "tests.h"

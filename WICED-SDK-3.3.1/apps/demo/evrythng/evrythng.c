@@ -8,6 +8,32 @@
  * written permission of Broadcom Corporation.
  */
 
+/** @file
+ *
+ * Evrythng cloud demo application
+ *
+ * This application connects to Evrythng's IoT cloud, subscribes to LED properties' changes
+ * and publish buttons' status.
+ *
+ * The application demonstrates the following features
+ *  - Wi-Fi client mode
+ *  - GPIO interface to capture button inputs
+ *  - LED control via GPIO
+ *  - Evrythng API
+ *
+ * Device Configuration
+ *    The application is configured to use the Wi-Fi configuration
+ *    from the local wifi_config_dct.h file. 
+ *
+ * Evrythng Setup (must be completed before compiling)
+ *    1. Go to dashboard.evrythng.com and create an account
+ *    2. Create a thing, change EVRYTHNG_BROADCOM_THNG definition (see below) with your thing id
+ *    3. Create device api key (see docs in the dashboard) and change 
+ *       DEVICE_API_KEY definition (see below) with your device api key
+ *    4. Compile and run the evrythng demo application
+ *    5. Press buttons and update leds' properties on the dashboard
+ */
+
 #include "wiced.h"
 #include "JSON.h"
 
@@ -18,7 +44,6 @@
  *                      Macros
  ******************************************************/
 
-//#define MQTT_URL "tcp://mqtt.evrythng.com:1883"
 #define MQTT_URL "ssl://mqtt.evrythng.com:443"
 
 #define DEVICE_API_KEY "iaaRIcy8WGvDSzgA4xX6IUac4jsjnvAtmMunXw0cigtlbxCvgIsJii6LrhEfPJifxeyRvvjyiqdmWXNg"
