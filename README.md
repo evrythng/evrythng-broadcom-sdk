@@ -1,6 +1,6 @@
-From Ruslan's e-mail:
+This readme is a compilation of Ruslan's e-mail and Skype conversations. 
 
-# Step by step
+# Step by step installation
 1. download official github client (if you don’t have) https://mac.github.com/
 2. clone the evrythng-broadcom-sdk (git@github.com:evrythng/evrythng-broadcom-sdk.git). Actually you can use command line to clone the repo, just type `git clone --recursive git@github.com:evrythng/evrythng-broadcom-sdk.git`
 3. go to `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1`
@@ -11,6 +11,12 @@ Find lines
 `#define CLIENT_AP_PASSPHRASE "<wifi passphrase>"`
 `#define CLIENT_AP_CHANNEL    <wifi channel>`
 and change it to the settings of your WiFi
+Change the EVT settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
+```
+#define DEVICE_API_KEY "<<EVT Device Api Key>>"
+
+#define EVRYTHNG_BROADCOM_THNG "<<EVT Thng Id>>"
+```
 
 5. connect the evaluation board with usb cable to your mac
 6. type/paste the next command in terminal in the above directory:
