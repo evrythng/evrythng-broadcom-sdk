@@ -1,5 +1,3 @@
-This readme is a compilation of Ruslan's e-mail and Skype conversations. 
-
 # Step by step installation
 1. download official github client (if you don’t have) https://mac.github.com/
 2. clone the evrythng-broadcom-sdk (git@github.com:evrythng/evrythng-broadcom-sdk.git). Actually you can use command line to clone the repo, just type `git clone --recursive git@github.com:evrythng/evrythng-broadcom-sdk.git`
@@ -23,4 +21,4 @@ Change the EVT settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
 
 `./make demo.evrythng-BCM943341WCD1-debug download run`
 
-Dominique shared an account (Embedded Devices (?) at dashboard.evrythng.com. You can find a BCM5WCD5EVAL1_3 thing there. Pressing buttons on eval board will update appropriate properties, changing green/red_led properties to true/false will turn on/off the eval board leds. You can delete all of these properties before the demo and it will be created upon board connect (app sends initial values to the cloud on startup).
+Pressing buttons on eval board will update appropriate properties, changing green/red_led properties to true/false will turn on/off the eval board leds. You can delete all of these properties before the demo and it will be created upon board connect (app sends initial values to the cloud on startup).
