@@ -6,12 +6,14 @@
 
 ## WiFi Setup
 
-* go to `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1`
-* edit file `apps/demo/evrythng/wifi_config_dct.h`, find lines:
+* go to `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1/apps/demo/evrythng/`
+* edit file `wifi_config_dct.h`, find lines:
 
 ```
 #define CLIENT_AP_SSID       "<wifi ssid>"
 #define CLIENT_AP_PASSPHRASE "<wifi passphrase>"
+#define CLIENT_AP_BSS_TYPE "<wifi type>"
+#define CLIENT_AP_SECURITY "<wifi security type>"
 #define CLIENT_AP_CHANNEL    "<wifi channel>"
 ```
 
@@ -19,7 +21,7 @@ and change it to the settings of your WiFi.
 
 ## EVRYTHNG Setup
 
-Change the EVRYTHNG settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
+Change the EVRYTHNG settings in `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
 ```
 #define DEVICE_API_KEY "<EVRYTHNG Device Api Key>"
 #define EVRYTHNG_BROADCOM_THNG "<EVRYTHNG Thng Id>"
