@@ -17,14 +17,14 @@ Find lines:
 
 and change it to the settings of your WiFi.
 
-Change the EVT settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
+Change the EVRYTHNG settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
 ```
 #define DEVICE_API_KEY "<<EVT Device Api Key>>"
 
 #define EVRYTHNG_BROADCOM_THNG "<<EVT Thng Id>>"
 ```
 
-5. connect the evaluation board with usb cable to your mac
+5. connect the evaluation board with usb cable to your computer
 6. type/paste the next command in terminal in the above directory:
 
 `./make demo.evrythng-BCM943341WCD1-debug download run`
