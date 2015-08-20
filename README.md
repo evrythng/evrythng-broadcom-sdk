@@ -19,9 +19,9 @@ and change it to the settings of your WiFi.
 
 Change the EVRYTHNG settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
 ```
-#define DEVICE_API_KEY "<<EVT Device Api Key>>"
+#define DEVICE_API_KEY "<EVRYTHNG Device Api Key>"
 
-#define EVRYTHNG_BROADCOM_THNG "<<EVT Thng Id>>"
+#define EVRYTHNG_BROADCOM_THNG "<EVRYTHNG Thng Id>"
 ```
 
 * connect the evaluation board with usb cable to your computer
