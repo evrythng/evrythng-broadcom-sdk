@@ -6,11 +6,16 @@
 
 2. go to `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1`
 3. edit file `apps/demo/evrythng/wifi_config_dct.h` :
-Find lines
-`#define CLIENT_AP_SSID       "<wifi ssid>"`
-`#define CLIENT_AP_PASSPHRASE "<wifi passphrase>"`
-`#define CLIENT_AP_CHANNEL    <wifi channel>`
-and change it to the settings of your WiFi
+
+Find lines:
+
+```
+#define CLIENT_AP_SSID       "<wifi ssid>"
+#define CLIENT_AP_PASSPHRASE "<wifi passphrase>"
+#define CLIENT_AP_CHANNEL    "<wifi channel>"
+```
+
+and change it to the settings of your WiFi.
 
 Change the EVT settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
 ```
