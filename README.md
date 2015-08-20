@@ -1,11 +1,11 @@
 # Step by step installation
 
-1. clone the evrythng-broadcom-sdk
+* clone the evrythng-broadcom-sdk
 
 `git clone --recursive git@github.com:evrythng/evrythng-broadcom-sdk.git`
 
-2. go to `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1`
-3. edit file `apps/demo/evrythng/wifi_config_dct.h` :
+* go to `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1`
+* edit file `apps/demo/evrythng/wifi_config_dct.h` :
 
 Find lines:
 
@@ -24,8 +24,8 @@ Change the EVRYTHNG settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
 #define EVRYTHNG_BROADCOM_THNG "<<EVT Thng Id>>"
 ```
 
-5. connect the evaluation board with usb cable to your computer
-6. type/paste the next command in terminal in the above directory:
+* connect the evaluation board with usb cable to your computer
+* type/paste the next command in terminal in the above directory:
 
 `./make demo.evrythng-BCM943341WCD1-debug download run`
 
