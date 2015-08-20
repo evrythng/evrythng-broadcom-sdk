@@ -28,7 +28,7 @@ Change the EVRYTHNG settings in `WICED-SDK-3.3.1/apps/demo/evrythng/evrythng.c`
 ## Build and flash
 
 * connect the evaluation board with usb cable to your computer
-* type/paste the next command in terminal in the above directory:
+* goto to `/path/to/repo/evrythng-broadcom-sdk/WICED-SDK-3.3.1` and run:
 
 `./make demo.evrythng-BCM943341WCD1-debug download run`
 
