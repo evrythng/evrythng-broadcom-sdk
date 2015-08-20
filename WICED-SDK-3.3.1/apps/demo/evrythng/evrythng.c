@@ -55,8 +55,6 @@
 #define RED_LED_PROPERTY   "red_led"
 #define GREEN_LED_PROPERTY "green_led"
 
-//#define PUBSUB_THREADS
-
 /******************************************************
  *                    Constants
  ******************************************************/
@@ -83,8 +81,10 @@ static void property_callback(const char* str_json, size_t len);
 
 static wiced_result_t json_callback(wiced_json_object_t* json_object);
 
-static void evrythng_sub(uint32_t arg);
 static void evrythng_pub(uint32_t arg);
+
+static void on_connection_lost();
+static void on_connection_restored();
 
 /******************************************************
  *               Variable Definitions
@@ -110,7 +110,7 @@ void application_start(void)
 
     evrythng_init_handle(&evt_handle);
     evrythng_set_log_callback(evt_handle, log_callback);
-    evrythng_set_conlost_callback(evt_handle, evrythng_cloud_connect);
+    evrythng_set_callbacks(evt_handle, on_connection_lost, on_connection_restored);
     evrythng_set_url(evt_handle, MQTT_URL);
     evrythng_set_key(evt_handle, DEVICE_API_KEY);
 
@@ -118,40 +118,14 @@ void application_start(void)
 
     evrythng_cloud_connect(evt_handle);
 
-#ifdef PUBSUB_THREADS
-    wiced_thread_t sub_thread, pub_thread;
-
-    if (wiced_rtos_create_thread(&sub_thread, 0, "evrythng_subscriptions", evrythng_sub, WICED_DEFAULT_APPLICATION_STACK_SIZE, 0) != WICED_SUCCESS)
-    {
-        platform_printf("failed to create subscription thread\n");
-    }
+    wiced_thread_t pub_thread;
     if (wiced_rtos_create_thread(&pub_thread, 0, "evrythng_publish", evrythng_pub, WICED_DEFAULT_APPLICATION_STACK_SIZE, 0) != WICED_SUCCESS)
     {
         platform_printf("failed to create publish thread\n");
     }
 
-    wiced_rtos_thread_join(&sub_thread);
     wiced_rtos_thread_join(&pub_thread);
-
-    wiced_rtos_delete_thread(&sub_thread);
     wiced_rtos_delete_thread(&pub_thread);
-#else
-    evrythng_sub(0);
-    evrythng_pub(0);
-#endif
-}
-
-
-void evrythng_sub(uint32_t arg)
-{
-    platform_printf("Subscribing to property %s\n", RED_LED_PROPERTY);
-    evrythng_subscribe_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, property_callback);
-    platform_printf("Subscribing to property %s\n", GREEN_LED_PROPERTY);
-    evrythng_subscribe_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, property_callback);
-
-#ifdef PUBSUB_THREADS
-    evrythng_message_loop(evt_handle);
-#endif
 }
 
 
@@ -189,12 +163,20 @@ void evrythng_pub(uint32_t arg)
             evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
         }
 
-#ifndef PUBSUB_THREADS
-        evrythng_message_cycle(evt_handle, 100);
-#else
-        wiced_rtos_delay_milliseconds( 250 );
-#endif
+        wiced_rtos_delay_milliseconds(100);
     }
+}
+
+void on_connection_lost()
+{
+    wiced_gpio_output_high(WICED_LED1);
+    wiced_gpio_output_low(WICED_LED2);
+}
+
+void on_connection_restored()
+{
+    wiced_gpio_output_high(WICED_LED2);
+    wiced_gpio_output_low(WICED_LED1);
 }
 
 void log_callback(evrythng_log_level_t level, const char* fmt, va_list vl)
@@ -223,24 +205,27 @@ void log_callback(evrythng_log_level_t level, const char* fmt, va_list vl)
 
 void evrythng_cloud_connect(evrythng_handle_t h)
 {
-    platform_printf("Connecting to %s\n", MQTT_URL);
+    on_connection_lost();
+
     while (evrythng_connect(evt_handle) != EVRYTHNG_SUCCESS) 
     {
         platform_printf("Retrying\n");
         wiced_rtos_delay_milliseconds(2000);
     }
-    platform_printf("Evrythng client Connected\n");
 
-    wiced_gpio_output_low(WICED_LED1);
-    wiced_gpio_output_low(WICED_LED2);
+    on_connection_restored();
 
     /* send initial "false" values to the cloud */
     char msg[128];
     sprintf(msg, "[{\"value\": false}]");
     evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, msg);
     evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, msg);
+
     evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
     evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
+
+    evrythng_subscribe_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, property_callback);
+    evrythng_subscribe_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, property_callback);
 }
 
 static int led_to_swtich = -1;

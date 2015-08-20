@@ -7,7 +7,8 @@ GLOBAL_INCLUDES := evrythng-c-library/evrythng/include \
 $(NAME)_INCLUDES := evrythng-c-library/embedded-mqtt/MQTTClient-C/src \
 				    evrythng-c-library/embedded-mqtt/MQTTPacket/src
 
-$(NAME)_SOURCES := evrythng-c-library/evrythng/src/evrythng.c \
+$(NAME)_SOURCES := evrythng-c-library/evrythng/src/evrythng_core.c \
+				   evrythng-c-library/evrythng/src/evrythng_api.c \
 				   evrythng-c-library/platforms/WICED/wiced.c \
 				   evrythng-c-library/embedded-mqtt/MQTTClient-C/src/MQTTClient.c \
 				   evrythng-c-library/embedded-mqtt/MQTTPacket/src/MQTTConnectClient.c \
