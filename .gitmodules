@@ -1,0 +1,4 @@
+[submodule "lib/core"]
+	path = lib/core
+	url = git@github.com:evrythng/evrythng-c-library.git
+	branch = external-sdk
