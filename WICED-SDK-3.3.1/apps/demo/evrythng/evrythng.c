@@ -108,11 +108,11 @@ void application_start(void)
     /* Bring up the network interface */
     wiced_network_up( WICED_STA_INTERFACE, WICED_USE_EXTERNAL_DHCP_SERVER, NULL );
 
-    evrythng_init_handle(&evt_handle);
-    evrythng_set_log_callback(evt_handle, log_callback);
-    evrythng_set_callbacks(evt_handle, on_connection_lost, on_connection_restored);
-    evrythng_set_url(evt_handle, MQTT_URL);
-    evrythng_set_key(evt_handle, DEVICE_API_KEY);
+    EvrythngInitHandle(&evt_handle);
+    EvrythngSetLogCallback(evt_handle, log_callback);
+    EvrythngSetConnectionCallbacks(evt_handle, on_connection_lost, on_connection_restored);
+    EvrythngSetUrl(evt_handle, MQTT_URL);
+    EvrythngSetKey(evt_handle, DEVICE_API_KEY);
 
     wiced_JSON_parser_register_callback(json_callback);
 
@@ -150,7 +150,7 @@ void evrythng_pub(uint32_t arg)
         {
             button1_pressed == WICED_TRUE ? sprintf(msg, "[{\"value\": true}]") : sprintf(msg, "[{\"value\": false}]");
             previous_button1_state = button1_pressed;
-            evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
+            EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
         }
 
         /* Read the state of Button 2 */
@@ -160,7 +160,7 @@ void evrythng_pub(uint32_t arg)
         {
             button2_pressed == WICED_TRUE ? sprintf(msg, "[{\"value\": true}]") : sprintf(msg, "[{\"value\": false}]");
             previous_button2_state = button2_pressed;
-            evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
+            EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
         }
 
         wiced_rtos_delay_milliseconds(100);
@@ -207,7 +207,7 @@ void evrythng_cloud_connect(evrythng_handle_t h)
 {
     on_connection_lost();
 
-    while (evrythng_connect(evt_handle) != EVRYTHNG_SUCCESS) 
+    while (EvrythngConnect(evt_handle) != EVRYTHNG_SUCCESS) 
     {
         platform_printf("Retrying\n");
         wiced_rtos_delay_milliseconds(2000);
@@ -218,14 +218,14 @@ void evrythng_cloud_connect(evrythng_handle_t h)
     /* send initial "false" values to the cloud */
     char msg[128];
     sprintf(msg, "[{\"value\": false}]");
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, msg);
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, msg);
 
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
-    evrythng_publish_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
 
-    evrythng_subscribe_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, property_callback);
-    evrythng_subscribe_thng_property(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, property_callback);
+    EvrythngSubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, 1, property_callback);
+    EvrythngSubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, 1, property_callback);
 }
 
 static int led_to_swtich = -1;
