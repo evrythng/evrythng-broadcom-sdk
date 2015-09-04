@@ -1,5 +1,3 @@
-build
-.gdbinit
-generated_mac_address.txt
 tags
 cscope.*
+WICED-SDK-*
