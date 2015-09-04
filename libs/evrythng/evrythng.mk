@@ -1,7 +1,7 @@
 
 NAME := Lib_Evrythng
 
-GLOBAL_INCLUDES := core/evrythng/include platform
+GLOBAL_INCLUDES := core/evrythng/include core/platforms
 
 $(NAME)_INCLUDES := core/embedded-mqtt/MQTTClient-C/src \
 				    core/embedded-mqtt/MQTTPacket/src
@@ -23,7 +23,7 @@ $(NAME)_SOURCES := core/evrythng/src/evrythng_core.c \
 
 ifdef EVRYTHNG_TESTS
 GLOBAL_INCLUDES += core/tests
-$(NAME)_SOURCES += core/tests/CuTest.c evrythng-c-library/tests/tests.c
+$(NAME)_SOURCES += core/tests/CuTest.c core/tests/tests.c
 endif
 
 $(NAME)_DEFINES  += WICED_PLATFORM

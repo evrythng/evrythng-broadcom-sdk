@@ -19,7 +19,7 @@ WICED_SDK_BUNDLE=$(notdir $(WICED_SDK_BUNDLE_PATH))
 WICED_SDK_BUNDLE_DIR=$(patsubst %.7z.zip,%,$(WICED_SDK_BUNDLE))
 EVRYTHNG_WICED_APPS_DIR=evrythng_sdk
 
-LIBS_DIR=lib
+LIBS_DIR=libs
 APPS_DIR=apps
 
 export PROJECT_ROOT WICED_SDK_BUNDLE_DIR 
@@ -28,9 +28,6 @@ export PROJECT_ROOT WICED_SDK_BUNDLE_DIR
 
 
 all: demo tests
-
-wiced_sdk_clean: 
-	$(AT)$(RMRF) $(wildcard $(WICED_SDK_BUNDLE_DIR)*)
 
 wiced_sdk_unpack: 
 	$(AT)if [ ! -d $(WICED_SDK_BUNDLE_DIR) ]; \
@@ -58,38 +55,27 @@ libs_symlinks: wiced_sdk_unpack
 
 
 
-demo: lib
-	$(AT)$(MAKE) -C $(WMSDK_BUNDLE_DIR) APPS=$(PROJECT_ROOT)/apps/demo
+demo: apps_symlinks libs_symlinks
+	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).demo-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD)
 
-demo_clean:
-	$(AT)$(MAKE) -C $(WMSDK_BUNDLE_DIR) APPS=$(PROJECT_ROOT)/apps/demo clean
-
-demo_flashprog: demo
-	cd $(WMSDK_PATH)/tools/OpenOCD; \
-	sudo ./flashprog.sh --$(BOARD_FW_PARTITION) $(PROJECT_ROOT)/apps/demo/bin/evrythng_demo.bin \
-
-demo_ramload: demo
-	cd $(WMSDK_PATH)/tools/OpenOCD; \
-	sudo ./ramload.sh $(PROJECT_ROOT)/apps/demo/bin/evrythng_demo.axf \
-
-demo_footprint:
-	$(AT)$(WMSDK_BUNDLE_DIR)/wmsdk/tools/bin/footprint.pl -m apps/demo/bin/evrythng_demo.map
+demo_run: demo
+	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).demo-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD) download run
 
 
 
 gen_config:
 	$(MAKE) -C $(PROJECT_ROOT)/lib/core gen_config
 
-tests: gen_config lib
-	$(AT)$(MAKE) -C $(WMSDK_BUNDLE_DIR) APPS=$(PROJECT_ROOT)/apps/tests
-
-tests_clean:
-	$(AT)$(MAKE) -C $(WMSDK_BUNDLE_DIR) APPS=$(PROJECT_ROOT)/apps/tests clean
+tests: apps_symlinks libs_symlinks
+	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).tests-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD)
 
 tests_run: tests
-	cd $(WMSDK_PATH)/tools/OpenOCD; \
-	sudo ./ramload.sh $(PROJECT_ROOT)/apps/tests/bin/evrythng_tests.axf \
+	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).tests-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD) download run
 
 
-clean: demo_clean tests_clean lib_clean wmsdk_clean 
+distclean: 
+	$(AT)$(RMRF) $(wildcard $(WICED_SDK_BUNDLE_DIR)*)
+
+clean:
+	$(AT)if [ -d $(WICED_SDK_BUNDLE_DIR) ]; then cd $(WICED_SDK_BUNDLE_DIR) && ./make clean; fi;
 
