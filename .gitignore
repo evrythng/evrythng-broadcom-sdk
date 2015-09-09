@@ -1,3 +1,4 @@
 tags
 cscope.*
 WICED-SDK-*
+/config.mk

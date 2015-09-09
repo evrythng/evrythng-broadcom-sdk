@@ -6,7 +6,7 @@
 #include "WICED/types.h"
 #include <stdio.h>
 #include <stdarg.h>
-#include "evrythng_platform.h"
+#include "evrythng/platform.h"
 
 void TimerInit(Timer* t)
 {

@@ -38,8 +38,8 @@
 
 
 #include "wiced.h"
-#include "evrythng.h"
-#include "evrythng_platform.h"
+#include "evrythng/evrythng.h"
+#include "evrythng/platform.h"
 #include "tests.h"
 
 /******************************************************

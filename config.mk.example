@@ -1,6 +1,6 @@
 
 # path to the original WICED sdk tarball
-WICED_SDK_BUNDLE_PATH=/home/rusel/Workspace/WICED-SDK-3.3.1.7z.zip
+WICED_SDK_BUNDLE_PATH=/path/to/wiced/sdk/archive
 
 TARGET_PLATFORM=BCM943341WCD1
 

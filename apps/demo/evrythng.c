@@ -37,8 +37,8 @@
 #include "wiced.h"
 #include "JSON.h"
 
-#include "evrythng.h"
-#include "evrythng_platform.h"
+#include "evrythng/evrythng.h"
+#include "evrythng/platform.h"
 
 /******************************************************
  *                      Macros

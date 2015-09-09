@@ -1,10 +1,11 @@
 
 NAME := Lib_Evrythng
 
-GLOBAL_INCLUDES := core/evrythng/include core/platforms
+GLOBAL_INCLUDES := core/evrythng/include platform
 
 $(NAME)_INCLUDES := core/embedded-mqtt/MQTTClient-C/src \
-				    core/embedded-mqtt/MQTTPacket/src
+				    core/embedded-mqtt/MQTTPacket/src \
+					platform
 
 $(NAME)_SOURCES := core/evrythng/src/evrythng_core.c \
 				   core/evrythng/src/evrythng_api.c \
