@@ -12,6 +12,7 @@ RMRF=rm -rf
 MAKE=make
 MKDIR=mkdir -p
 LINK=ln -s
+CHDIR=cd
 
 PROJECT_ROOT=$(shell pwd)
 
@@ -21,13 +22,34 @@ EVRYTHNG_WICED_APPS_DIR=evrythng_sdk
 
 LIBS_DIR=libs
 APPS_DIR=apps
+COMMON_TARGETS=all wiced_sdk_unpack apps_symlinks libs_symlinks distclean clean
 
-export PROJECT_ROOT WICED_SDK_BUNDLE_DIR 
+APP_TARGETS=$(patsubst %_run,%,$(strip $(filter-out $(COMMON_TARGETS),$(MAKECMDGOALS))))
+$(foreach app,$(APP_TARGETS),$(if $(filter $(APPS_DIR)/$(app),$(wildcard $(APPS_DIR)/*)),,$(error "$(app)" was not found in $(APPS_DIR) folder)))
 
-.PHONY: all wiced_sdk_unpack demo demo_clean tests lib lib_clean clean 
+define all_app_names
+$(notdir $(wildcard $(APPS_DIR)/*))
+endef
 
+ifeq ($(MAKECMDGOALS),)
+APP_TARGETS=$(call all_app_names)
+endif
+ifeq ($(MAKECMDGOALS),all)
+APP_TARGETS=$(call all_app_names)
+endif
 
-all: demo tests
+.PHONY: $(COMMON_TARGETS) $(APP_TARGETS)
+
+all: $(APP_TARGETS)
+
+define build_app
+$(1): apps_symlinks libs_symlinks
+	$(AT)$(CHDIR) $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).$(1)-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD)
+
+$(1)_run:
+	$(AT)$(CHDIR) $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).$(1)-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD) download run
+endef
+$(foreach app,$(APP_TARGETS),$(eval $(call build_app,$(app))))
 
 wiced_sdk_unpack: 
 	$(AT)if [ ! -d $(WICED_SDK_BUNDLE_DIR) ]; \
@@ -38,7 +60,7 @@ wiced_sdk_unpack:
 
 apps_symlinks: wiced_sdk_unpack
 	$(AT)$(MKDIR) $(WICED_SDK_BUNDLE_DIR)/apps/$(EVRYTHNG_WICED_APPS_DIR); \
-	for app in $(notdir $(wildcard $(APPS_DIR)/*)); \
+	for app in $(call all_app_names); \
 	do \
 		if [ ! -h $(WICED_SDK_BUNDLE_DIR)/apps/$(EVRYTHNG_WICED_APPS_DIR)/$$app ]; then \
 			$(LINK) $(PROJECT_ROOT)/$(APPS_DIR)/$$app $(WICED_SDK_BUNDLE_DIR)/apps/$(EVRYTHNG_WICED_APPS_DIR); \
@@ -54,28 +76,9 @@ libs_symlinks: wiced_sdk_unpack
 	done \
 
 
-
-demo: apps_symlinks libs_symlinks
-	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).demo-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD)
-
-demo_run: demo
-	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).demo-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD) download run
-
-
-
-gen_config:
-	$(MAKE) -C $(PROJECT_ROOT)/lib/core gen_config
-
-tests: apps_symlinks libs_symlinks
-	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).tests-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD)
-
-tests_run: tests
-	$(AT)cd $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).tests-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD) download run
-
-
 distclean: 
 	$(AT)$(RMRF) $(wildcard $(WICED_SDK_BUNDLE_DIR)*)
 
 clean:
-	$(AT)if [ -d $(WICED_SDK_BUNDLE_DIR) ]; then cd $(WICED_SDK_BUNDLE_DIR) && ./make clean; fi;
+	$(AT)if [ -d $(WICED_SDK_BUNDLE_DIR) ]; then $(CHDIR) $(WICED_SDK_BUNDLE_DIR) && ./make clean; fi;
 

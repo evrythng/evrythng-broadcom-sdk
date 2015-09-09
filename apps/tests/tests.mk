@@ -21,5 +21,3 @@ EVRYTHNG_TESTS = 1
 WIFI_CONFIG_DCT_H := wifi_config_dct.h
 
 APPLICATION_DCT   := 
-
-$(shell cd $(SOURCE_ROOT)libraries/evrythng/evrythng-c-library && tests/gen_header.sh)
