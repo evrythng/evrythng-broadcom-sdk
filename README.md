@@ -15,7 +15,7 @@ libs/evrythng/core/README.md
 
 ## Clone
 
-`git clone -b external-sdk --recursive git@github.com:evrythng/evrythng-broadcom-sdk.git`
+`git clone --recursive git@github.com:evrythng/evrythng-broadcom-sdk.git`
 
 ## Requirements
 
