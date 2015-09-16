@@ -1,8 +1,4 @@
-[submodule "lib/evrythng/core"]
-	path = lib/evrythng/core
-	url = git@github.com:evrythng/evrythng-c-library.git
-	branch = external-sdk
 [submodule "libs/evrythng/core"]
 	path = libs/evrythng/core
 	url = git@github.com:evrythng/evrythng-c-library.git
-	branch = external-sdk
+	branch = master
