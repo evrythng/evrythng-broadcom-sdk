@@ -89,11 +89,11 @@ Pressing buttons on eval board will update appropriate properties, changing gree
 ## Creating your own application
 
 1. Go to apps folder and copy-rename demo application
-2. To build an application run:
+2. To build/flash an application run:
 ```
 make your_app_name
 ```
-3.  To flash the board run:
+and to flash run:
 ```
 make your_app_name_run
 ```
