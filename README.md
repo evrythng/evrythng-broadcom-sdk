@@ -1,10 +1,10 @@
-# Evrythng Broadcom SDK
+# EVRYTHNG Broadcom SDK
 
-An Evrythng SDK based on Broadcom WICED SDK.
+An EVRYTHNG SDK for Broadcom IoT SoC boards (based on WICED SDK).
 
 ## Overview
 
-The Evrythng Broadcom SDK contains Evrythng API to work with Evrythng cloud, sample application which shows how to use this API and unit tests.
+The EVRYTHNG Broadcom SDK contains an MQTT SDK to work with the EVRYTHNG cloud as well as sample applications and unit tests.
 
 ## EVRYTHNG API
 
@@ -13,30 +13,38 @@ You can find a programming guide in the following file:
 libs/evrythng/core/README.md
 ```
 
+## Get the latest release
+
+See [our release page](https://github.com/evrythng/evrythng-broadcom-sdk/releases).
+
+
 ## Clone
+
+Ensure you use the `--recursive` option as this project depends on the [EVRYTHNG C library](https://github.com/evrythng/evrythng-c-library):
 
 `git clone --recursive git@github.com:evrythng/evrythng-broadcom-sdk.git`
 
-## Requirements
+## Dependencies
 
-1. Go to **community.broadcom.com** and download the latest WICED SDK. This SDK was tested with WICED SDK version 3.3.1
-2. Install on your local machine: `sudo apt-get install p7zip-full` 
+1. In order to compile the library and run the tests you should install the following dependencies on your local machine:
+2. Go to **community.broadcom.com** and download the latest WICED SDK. This SDK was tested with WICED SDK version 3.3.1
+3. Install on your local machine: `sudo apt-get install p7zip-full` 
 
 ## Configuring
 
-Copy file **config.mk.example** to **config.mk** and set all the variable values according to your needs following the instructions inside.
+Copy the `config.mk.example` file to `config.mk` and configure it for your environment.
 
 ## Building
 
-Building a library, demo application and tests is as easy as typing
+To build the library, demo application and tests just run:
 ```
 make
 ```
-To build demo application
+To build the demo application only run:
 ```
 make demo
 ```
-To build tests application
+To build the tests only run:
 ```
 make tests
 ```
@@ -44,11 +52,11 @@ Additionally you can set NOISY to 1 to see more output (0 by default)
 ```
 make NOISY=1
 ```
-To clean the build files
+To clean the build files run:
 ```
 make clean
 ```
-## Running and flashing demo and tests applications
+## Running and flashing the demo and tests applications
 
 ### WiFi Setup
 
@@ -81,12 +89,12 @@ Pressing buttons on eval board will update appropriate properties, changing gree
 ## Creating your own application
 
 1. Go to apps folder and copy-rename demo application
-3. You can now start building/flashing and running your application by calling:
+2. You can now start building/flashing and running your application by calling:
 ```
 make your_app_name
 ```
-to build an application
+To build an application run:
 ```
 make your_app_name_run
 ```
-to flash the board
+To flash the board run:
