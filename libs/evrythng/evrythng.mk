@@ -1,7 +1,7 @@
 
 NAME := Lib_Evrythng
 
-GLOBAL_INCLUDES := core/evrythng/include platform
+GLOBAL_INCLUDES := core/evrythng/include platform/WICED
 
 $(NAME)_INCLUDES := core/embedded-mqtt/MQTTClient-C/src \
 				    core/embedded-mqtt/MQTTPacket/src \
@@ -26,8 +26,6 @@ ifdef EVRYTHNG_TESTS
 GLOBAL_INCLUDES += core/tests
 $(NAME)_SOURCES += core/tests/CuTest.c core/tests/tests.c
 endif
-
-$(NAME)_DEFINES  += WICED_PLATFORM
 
 #$(NAME)_CFLAGS  := $(COMPILER_SPECIFIC_PEDANTIC_CFLAGS)
 $(NAME)_CFLAGS  = $(COMPILER_SPECIFIC_STANDARD_CFLAGS)

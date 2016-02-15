@@ -3,22 +3,21 @@
  * www.evrythng.com
  */
 
-#include "WICED/types.h"
 #include <stdio.h>
 #include <stdarg.h>
 #include "evrythng/platform.h"
 
-void TimerInit(Timer* t)
+void platform_timer_init(Timer* t)
 {
     t->time = 0;
 }
 
-void TimerDeinit(Timer* t)
+void platform_timer_deinit(Timer* t)
 {
 }
 
 
-char TimerIsExpired(Timer* t)
+char platform_timer_isexpired(Timer* t)
 {
     wiced_time_t now;
     wiced_time_get_time(&now);
@@ -26,14 +25,14 @@ char TimerIsExpired(Timer* t)
 }
 
 
-void TimerCountdownMS(Timer* t, unsigned int ms)
+void platform_timer_countdown(Timer* t, unsigned int ms)
 {
     wiced_time_get_time(&t->time);
     t->time += ms;
 }
 
 
-int TimerLeftMS(Timer* t)
+int platform_timer_left(Timer* t)
 {
     wiced_time_t now;
     wiced_time_get_time(&now);
@@ -42,13 +41,13 @@ int TimerLeftMS(Timer* t)
 }
 
 
-void NetworkInit(Network* n)
+void platform_network_init(Network* n)
 {
     n->tls_enabled = WICED_FALSE;
 }
 
 
-void NetworkSecuredInit(Network* n, const char* ca_buf, size_t ca_size)
+void platform_network_securedinit(Network* n, const char* ca_buf, size_t ca_size)
 {
     if (!n || !ca_buf || !ca_size)
     {
@@ -67,7 +66,7 @@ void NetworkSecuredInit(Network* n, const char* ca_buf, size_t ca_size)
 }
 
 
-int NetworkConnect(Network* n, char* hostname, int port)
+int platform_network_connect(Network* n, char* hostname, int port)
 {
     wiced_ip_address_t ip_address;
     wiced_result_t rc = -1;
@@ -122,12 +121,12 @@ int NetworkConnect(Network* n, char* hostname, int port)
     rc = WICED_SUCCESS;
 exit:
     if (rc != WICED_SUCCESS)
-        NetworkDisconnect(n);
+        platform_network_disconnect(n);
     return rc;
 }
 
 
-void NetworkDisconnect(Network* n)
+void platform_network_disconnect(Network* n)
 {
     wiced_tcp_disconnect(&n->socket);
     wiced_tcp_stream_deinit(&n->stream);
@@ -135,7 +134,7 @@ void NetworkDisconnect(Network* n)
 }
 
 
-int NetworkRead(Network* n, unsigned char* buffer, int length, int timeout)
+int platform_network_read(Network* n, unsigned char* buffer, int length, int timeout)
 {
     wiced_result_t rc = wiced_tcp_stream_read(&n->stream, buffer, length, timeout);
     if (rc != WICED_SUCCESS)
@@ -157,7 +156,7 @@ int NetworkRead(Network* n, unsigned char* buffer, int length, int timeout)
 }
 
 
-int NetworkWrite(Network* n, unsigned char* buffer, int length, int timeout)
+int platform_network_write(Network* n, unsigned char* buffer, int length, int timeout)
 {
     wiced_result_t rc = wiced_tcp_stream_write(&n->stream, buffer, length);
     if (rc != WICED_SUCCESS)
@@ -179,7 +178,7 @@ int NetworkWrite(Network* n, unsigned char* buffer, int length, int timeout)
 }
 
 
-void MutexInit(Mutex* m)
+void platform_mutex_init(Mutex* m)
 {
     if (!m)
     {
@@ -191,7 +190,7 @@ void MutexInit(Mutex* m)
 }
 
 
-int MutexLock(Mutex* m)
+int platform_mutex_lock(Mutex* m)
 {
     if (!m)
     {
@@ -206,7 +205,7 @@ int MutexLock(Mutex* m)
 }
 
 
-int MutexUnlock(Mutex* m)
+int platform_mutex_unlock(Mutex* m)
 {
     if (!m)
     {
@@ -221,7 +220,7 @@ int MutexUnlock(Mutex* m)
 }
 
 
-void MutexDeinit(Mutex* m)
+void platform_mutex_deinit(Mutex* m)
 {
     if (!m)
     {
@@ -233,7 +232,7 @@ void MutexDeinit(Mutex* m)
 }
 
 
-void SemaphoreInit(Semaphore* s)
+void platform_semaphore_init(Semaphore* s)
 {
     if (!s)
     {
@@ -245,7 +244,7 @@ void SemaphoreInit(Semaphore* s)
 }
 
 
-void SemaphoreDeinit(Semaphore* s)
+void platform_semaphore_deinit(Semaphore* s)
 {
     if (!s)
     {
@@ -257,7 +256,7 @@ void SemaphoreDeinit(Semaphore* s)
 }
 
 
-int SemaphorePost(Semaphore* s)
+int platform_semaphore_post(Semaphore* s)
 {
     if (!s)
     {
@@ -276,7 +275,7 @@ int SemaphorePost(Semaphore* s)
 }
 
 
-int SemaphoreWait(Semaphore* s, int timeout_ms)
+int platform_semaphore_wait(Semaphore* s, int timeout_ms)
 {
     if (!s)
     {
@@ -300,11 +299,11 @@ static void func_wrapper(uint32_t arg)
     Thread* t = (Thread*)arg;
     (*t->func)(t->arg);
 
-    SemaphorePost(&t->join_sem);
+    platform_semaphore_post(&t->join_sem);
 }
 
 
-int ThreadCreate(Thread* t, 
+int platform_thread_create(Thread* t, 
         int priority, 
         const char* name, 
         void (*func)(void*), 
@@ -315,7 +314,7 @@ int ThreadCreate(Thread* t,
     t->func = func;
     t->arg = arg;
 
-    SemaphoreInit(&t->join_sem);
+    platform_semaphore_init(&t->join_sem);
 
     if (wiced_rtos_create_thread(&t->tid, priority, name, func_wrapper, stack_size, t) != WICED_SUCCESS)
         return -1;
@@ -324,11 +323,11 @@ int ThreadCreate(Thread* t,
 }
 
 
-int ThreadJoin(Thread* t, int timeout_ms)
+int platform_thread_join(Thread* t, int timeout_ms)
 {
     if (!t) return -1;
 
-    if (SemaphoreWait(&t->join_sem, timeout_ms) != 0)
+    if (platform_semaphore_wait(&t->join_sem, timeout_ms) != 0)
     {
         platform_printf("%s: timeout waiting for join\n", __func__);
         return -1;
@@ -338,12 +337,12 @@ int ThreadJoin(Thread* t, int timeout_ms)
 }
 
 
-int ThreadDestroy(Thread* t)
+int platform_thread_destroy(Thread* t)
 {
     if (!t) return -1;
     wiced_result_t rc = wiced_rtos_delete_thread(&t->tid);
 
-    SemaphoreDeinit(&t->join_sem);
+    platform_semaphore_deinit(&t->join_sem);
 
     if (rc != WICED_SUCCESS) return -1;
     return 0;
