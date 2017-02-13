@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <wwd_crypto.h>
 #include "evrythng/platform.h"
 
 void platform_timer_init(Timer* t)
@@ -396,7 +397,17 @@ void platform_free(void* memory)
     free(memory);
 }
 
+
 void platform_sleep(int ms)
 {
     wiced_rtos_delay_milliseconds(ms);
+}
+
+
+int platform_rand()
+{
+    int random_number;
+    wwd_wifi_get_random(&random_number, sizeof random_number);
+
+    return random_number;
 }
