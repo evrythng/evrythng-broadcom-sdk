@@ -46,7 +46,7 @@
 
 #define MQTT_URL "ssl://mqtt.evrythng.com:443"
 
-#define DEVICE_API_KEY "iaaRIcy8WGvDSzgA4xX6IUac4jsjnvAtmMunXw0cigtlbxCvgIsJii6LrhEfPJifxeyRvvjyiqdmWXNg"
+#define DEVICE_API_KEY ""
 
 #define EVRYTHNG_BROADCOM_THNG "UC5tXtqQPVpRPHKUHs7Ggkrr"
 
