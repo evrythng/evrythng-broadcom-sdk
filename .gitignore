@@ -2,3 +2,4 @@ tags
 cscope.*
 WICED-SDK-*
 /config.mk
+test_config

@@ -42,8 +42,13 @@ endif
 
 all: $(APP_TARGETS)
 
+gen_test_header:
+	@$(PROJECT_ROOT)/$(LIBS_DIR)/evrythng/core/tests/gen_header.sh \
+		$(PROJECT_ROOT)/test_config \
+		$(PROJECT_ROOT)/$(LIBS_DIR)/evrythng/core/tests/evrythng_config.h
+
 define build_app
-$(1): apps_symlinks libs_symlinks
+$(1): apps_symlinks libs_symlinks gen_test_header
 	$(AT)$(CHDIR) $(WICED_SDK_BUNDLE_DIR) && ./make $(EVRYTHNG_WICED_APPS_DIR).$(1)-$(TARGET_PLATFORM)-$(TARGET_OS)-$(TARGET_IPSTACK)-$(TARGET_BUILD)
 
 $(1)_run:
