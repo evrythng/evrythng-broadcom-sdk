@@ -5,7 +5,8 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#include <wwd_crypto.h>
+#include <wiced_crypto.h>
+#include <wiced_tls.h>
 #include "evrythng/platform.h"
 
 void platform_timer_init(Timer* t)
@@ -56,7 +57,7 @@ void platform_network_securedinit(Network* n, const char* ca_buf, size_t ca_size
         return;
     }
 
-    wiced_result_t rc = wiced_tls_init_root_ca_certificates(ca_buf);
+    wiced_result_t rc = wiced_tls_init_root_ca_certificates(ca_buf, ca_size);
     if (rc != WICED_SUCCESS)
     {
         platform_printf("%s: root CA certificate failed to initialize: %u\n", __func__, rc);
@@ -92,7 +93,7 @@ int platform_network_connect(Network* n, char* hostname, int port)
     }
 
     if (n->tls_enabled)
-        wiced_tls_init_simple_context(&n->tls_context, hostname);
+        wiced_tls_init_context(&n->tls_context, NULL, "*.evrythng.com");
 
     /* Create a TCP socket */
     rc = wiced_tcp_create_socket(&n->socket, WICED_STA_INTERFACE);
@@ -130,7 +131,8 @@ exit:
 void platform_network_disconnect(Network* n)
 {
     wiced_tcp_disconnect(&n->socket);
-    wiced_tcp_stream_deinit(&n->stream);
+    if (n->stream.socket)
+        wiced_tcp_stream_deinit(&n->stream);
     wiced_tcp_delete_socket(&n->socket);
 }
 
@@ -407,7 +409,7 @@ void platform_sleep(int ms)
 int platform_rand()
 {
     int random_number;
-    wwd_wifi_get_random(&random_number, sizeof random_number);
+    wiced_crypto_get_random(&random_number, sizeof random_number);
 
     return random_number;
 }
