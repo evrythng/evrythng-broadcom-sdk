@@ -27,9 +27,8 @@
  *
  * Evrythng Setup (must be completed before compiling)
  *    1. Go to dashboard.evrythng.com and create an account
- *    2. Create a thing, change EVRYTHNG_BROADCOM_THNG definition (see below) with your thing id
- *    3. Create device api key (see docs in the dashboard) and change 
- *       DEVICE_API_KEY definition (see below) with your device api key
+ *    2. Create a thing, and create evt_config in the root project folder 
+ *       fill in the required info, THNG_ID and DEVICE_API_KEY
  *    4. Compile and run the evrythng demo application
  *    5. Press buttons and update leds' properties on the dashboard
  */
@@ -40,15 +39,11 @@
 #include "evrythng/evrythng.h"
 #include "evrythng/platform.h"
 
+#include "evt_config.h"
+
 /******************************************************
  *                      Macros
  ******************************************************/
-
-#define MQTT_URL "ssl://mqtt.evrythng.com:443"
-
-#define DEVICE_API_KEY ""
-
-#define EVRYTHNG_BROADCOM_THNG "UC5tXtqQPVpRPHKUHs7Ggkrr"
 
 #define BUTTON_1_PROPERTY "button_1"
 #define BUTTON_2_PROPERTY "button_2"
@@ -150,7 +145,7 @@ void evrythng_pub(uint32_t arg)
         {
             button1_pressed == WICED_TRUE ? sprintf(msg, "[{\"value\": true}]") : sprintf(msg, "[{\"value\": false}]");
             previous_button1_state = button1_pressed;
-            EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
+            EvrythngPubThngProperty(evt_handle, THNG_ID, BUTTON_1_PROPERTY, msg);
         }
 
         /* Read the state of Button 2 */
@@ -160,7 +155,7 @@ void evrythng_pub(uint32_t arg)
         {
             button2_pressed == WICED_TRUE ? sprintf(msg, "[{\"value\": true}]") : sprintf(msg, "[{\"value\": false}]");
             previous_button2_state = button2_pressed;
-            EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
+            EvrythngPubThngProperty(evt_handle, THNG_ID, BUTTON_2_PROPERTY, msg);
         }
 
         wiced_rtos_delay_milliseconds(100);
@@ -218,14 +213,14 @@ void evrythng_cloud_connect(evrythng_handle_t h)
     /* send initial "false" values to the cloud */
     char msg[128];
     sprintf(msg, "[{\"value\": false}]");
-    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, msg);
-    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, THNG_ID, RED_LED_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, THNG_ID, GREEN_LED_PROPERTY, msg);
 
-    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_1_PROPERTY, msg);
-    EvrythngPubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, BUTTON_2_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, THNG_ID, BUTTON_1_PROPERTY, msg);
+    EvrythngPubThngProperty(evt_handle, THNG_ID, BUTTON_2_PROPERTY, msg);
 
-    EvrythngSubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, RED_LED_PROPERTY, 1, property_callback);
-    EvrythngSubThngProperty(evt_handle, EVRYTHNG_BROADCOM_THNG, GREEN_LED_PROPERTY, 1, property_callback);
+    EvrythngSubThngProperty(evt_handle, THNG_ID, RED_LED_PROPERTY, 1, property_callback);
+    EvrythngSubThngProperty(evt_handle, THNG_ID, GREEN_LED_PROPERTY, 1, property_callback);
 }
 
 static int led_to_swtich = -1;

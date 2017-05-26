@@ -3,3 +3,5 @@ cscope.*
 WICED-SDK-*
 /config.mk
 test_config
+evt_config
+evt_config.h

@@ -1,0 +1,3 @@
+MQTT_URL=ssl://mqtt.evrythng.com:443
+DEVICE_API_KEY=<device api key here>
+THNG_ID=<thng id here>
