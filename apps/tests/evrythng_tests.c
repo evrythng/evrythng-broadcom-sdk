@@ -91,7 +91,7 @@ void application_start(void)
     platform_printf("Starting EVRYTHNG test suite\n");
 
     wiced_thread_t t;
-    wiced_rtos_create_thread(&t, 0, "evt_tests", thread_tests, 16384, 0);
+    wiced_rtos_create_thread(&t, 0, "evt_tests", thread_tests, 3048, 0);
     wiced_rtos_thread_join(&t);
     wiced_rtos_delete_thread(&t);
 
